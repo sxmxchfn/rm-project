@@ -26,12 +26,14 @@ const CharItem: FC<CharItemProps> = ({ character, episodes }) => {
   return (
     <div className="bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden text-white shadow-lg hover:bg-white/20 transition-all max-w-[800px] flex h-full">
       <div className="w-1/3 h-full">
-        <img
-          src={character.image}
-          alt={`Portrait of ${character.name}`}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+        <div className="aspect-square w-full h-full">
+          <img
+            src={character.image}
+            alt={`Portrait of ${character.name}`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
       </div>
       <div className="p-4 flex flex-col flex-grow">
         <h2 className="text-xl font-bold">
