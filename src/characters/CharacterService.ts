@@ -34,8 +34,39 @@ export const charactersApi = createApi({
       keepUnusedDataFor: 0,
     }),
     fetchAllEpisodes: builder.query<Episodes[], void>({
-      query: () => "/episode",
-      transformResponse: (response: EpisodesApiResponse) => response.results,
+      async queryFn(_, __, ___, baseQuery) {
+        try {
+          const firstPage = await baseQuery("/episode?page=1");
+          if (firstPage.error) {
+            return { error: firstPage.error };
+          }
+
+          const data = firstPage.data as EpisodesApiResponse;
+          const totalPages = data.info.pages;
+
+          if (totalPages === 1) {
+            return { data: data.results };
+          }
+
+          const remainingPages = Array.from(
+            { length: totalPages - 1 },
+            (_, i) => baseQuery(`/episode?page=${i + 2}`)
+          );
+
+          const remainingResults = await Promise.all(remainingPages);
+
+          const allEpisodes = [
+            ...data.results,
+            ...remainingResults.flatMap((result) =>
+              result.data ? (result.data as EpisodesApiResponse).results : []
+            ),
+          ];
+
+          return { data: allEpisodes };
+        } catch (error) {
+          return { error: error as Error };
+        }
+      },
       keepUnusedDataFor: 0,
     }),
   }),

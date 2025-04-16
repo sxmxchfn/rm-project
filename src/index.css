@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
+@theme {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -40,6 +40,7 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-sg: "Special Gothic Condensed One", sans-serif;
 }
 
 :root {
@@ -126,16 +127,12 @@
   }
 }
 
-@theme {
-  --font-sg: "Special Gothic Condensed One", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 /* Add this section to define the font-sg utility class */
 @layer utilities {
   .font-sg {
     font-family: var(--font-sg);
+    font-weight: 400;
+    font-style: normal;
   }
 }
 
