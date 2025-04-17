@@ -24,7 +24,7 @@ const CharItem: FC<CharItemProps> = ({ character, episodes }) => {
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden text-white shadow-lg hover:bg-white/20 transition-all max-w-[800px] flex h-full">
+    <div className="bg-white/10 backdrop-blur-sm rounded-lg overflow-hidden text-white shadow-lg hover:bg-white/20 transition-all max-w-[800px] flex min-h-[200px]">
       <div className="w-1/3 h-full">
         <div className="aspect-square w-full h-full">
           <img
