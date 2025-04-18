@@ -2,11 +2,28 @@ import {
   useFetchAllCharactersQuery,
   useFetchAllEpisodesQuery,
 } from "@/characters/CharacterService";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import CharItem from "./CharItem";
+import CharFilter from "./CharFilter";
+
+type FilterState = {
+  gender: string;
+  status: string;
+  species: string;
+  searchName: string;
+};
+
+const initialFilters: FilterState = {
+  // начальные значения пропсов, где пустая строка - фильтр не активен
+  gender: "",
+  status: "",
+  species: "",
+  searchName: "",
+};
 
 const CharContainer = () => {
   const [showLoading, setShowLoading] = useState(true);
+  const [filters, setFilters] = useState<FilterState>(initialFilters);
 
   useEffect(() => {
     const timer = setTimeout(() => setShowLoading(false), 1000);
@@ -31,6 +48,35 @@ const CharContainer = () => {
     refetchCharacters();
     refetchEpisodes();
   }, [refetchCharacters, refetchEpisodes]);
+
+  const handleFilterChange = (filterName: keyof FilterState, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterName]: value,
+    }));
+  };
+
+  const handleResetFilters = () => {
+    setFilters(initialFilters);
+  };
+
+  const filteredCharacters = useMemo(() => {
+    if (!characters) return [];
+
+    return characters.filter((character) => {
+      const matchesGender =
+        !filters.gender ||
+        character.gender.toLowerCase() === filters.gender.toLowerCase();
+      const matchesStatus =
+        !filters.status ||
+        character.status.toLowerCase() === filters.status.toLowerCase();
+      const matchesSpecies =
+        !filters.species ||
+        character.species.toLowerCase() === filters.species.toLowerCase();
+
+      return matchesGender && matchesStatus && matchesSpecies;
+    });
+  }, [characters, filters]);
 
   const isLoading = isLoadingCharacters || isLoadingEpisodes;
   const error = charactersError || episodesError;
@@ -72,13 +118,19 @@ const CharContainer = () => {
   }
 
   return (
-    <div
-      className="container mx-auto px-4 py-8"
-      role="region"
-      aria-label="Characters grid"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {characters.map((character) => (
+    <div className="container mx-auto px-4 py-8">
+      <CharFilter
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onReset={handleResetFilters}
+      />
+
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"
+        role="region"
+        aria-label="Characters grid"
+      >
+        {filteredCharacters.map((character) => (
           <CharItem
             key={character.id}
             character={character}

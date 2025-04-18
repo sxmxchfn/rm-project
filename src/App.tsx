@@ -1,5 +1,6 @@
 import CharContainer from "./components/CharContainer";
 import HeroSection from "./components/HeroSection";
+
 function App() {
   return (
     <>
