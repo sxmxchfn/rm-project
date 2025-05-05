@@ -44,11 +44,6 @@ const CharContainer = () => {
     refetch: refetchEpisodes,
   } = useFetchAllEpisodesQuery();
 
-  useEffect(() => {
-    refetchCharacters();
-    refetchEpisodes();
-  }, [refetchCharacters, refetchEpisodes]);
-
   const handleFilterChange = (filterName: keyof FilterState, value: string) => {
     setFilters((prev) => ({
       ...prev,

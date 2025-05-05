@@ -38,7 +38,7 @@ const CharFilter: React.FC<CharFilterProps> = ({
           </button>
         </div>
 
-        {/* Gender Filter */}
+        
         <div className="mb-4">
           <label
             htmlFor="gender"
@@ -71,7 +71,7 @@ const CharFilter: React.FC<CharFilterProps> = ({
           </div>
         </div>
 
-        {/* Status Filter */}
+        
         <div className="mb-4">
           <label
             htmlFor="status"
@@ -104,7 +104,7 @@ const CharFilter: React.FC<CharFilterProps> = ({
           </div>
         </div>
 
-        {/* Species Filter */}
+        
         <div className="mb-4">
           <label
             htmlFor="species"

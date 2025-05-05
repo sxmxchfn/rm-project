@@ -1,6 +1,6 @@
 import { Characters } from "@/characters/characters";
 import { Episodes } from "@/characters/episodes";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 interface CharItemProps {
   character: Characters;
@@ -8,9 +8,11 @@ interface CharItemProps {
 }
 
 const CharItem: FC<CharItemProps> = ({ character, episodes }) => {
-  const firstEpisode = episodes?.find(
-    (ep) => ep.id === parseInt(character.episode[0]?.split("/").pop() || "0")
-  );
+  const firstEpisode = useMemo(() => {
+    return episodes?.find(
+      (ep) => ep.id === parseInt(character.episode[0]?.split("/").pop() || "0")
+    );
+  }, [episodes, character.episode]);
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
